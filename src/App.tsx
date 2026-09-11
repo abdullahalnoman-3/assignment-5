@@ -6,6 +6,7 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import TechCard from './components/TechCard';
 import YourStack from './components/YourStack';
+import Footer from './components/Footer';
 
 import type { Technology } from './types';
 
@@ -15,30 +16,46 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    
     const fetchData = async () => {
       try {
         const response = await fetch('/technologies.json');
         const data = await response.json();
         setTechnologies(data);
         
-        // Preloader
-        setTimeout(() => setLoading(false), 800);
+        setTimeout(() => {
+          setLoading(false);
+        }, 800);
       } catch (error) {
+        console.error("Error fetching data:", error);
         toast.error("Failed to load technologies data");
         setLoading(false);
       }
     };
+
     fetchData();
   }, []);
 
   const addToStack = (tech: Technology) => {
-    if (stack.find(item => item.id === tech.id)) return;
+    const isExist = stack.find(item => item.id === tech.id);
+    if (isExist) {
+      toast.warn("Technology is already added to your stack!");
+      return;
+    }
     setStack([...stack, tech]);
     toast.success(`${tech.name} added to stack!`);
   };
 
-  const removeFromStack = (id: string) => setStack(stack.filter(item => item.id !== id));
-  const removeAll = () => setStack([]);
+  const removeFromStack = (id: string) => {
+    setStack(stack.filter(item => item.id !== id));
+    toast.info("Technology removed from stack");
+  };
+
+  const removeAll = () => {
+    if (stack.length === 0) return;
+    setStack([]);
+    toast.error("All technologies removed from stack");
+  };
 
   if (loading) {
     return (
@@ -64,19 +81,28 @@ const App: React.FC = () => {
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
+
           <div className="lg:w-3/4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {technologies.map(tech => (
-                <TechCard key={tech.id} tech={tech} isAdded={stack.some(item => item.id === tech.id)} onAdd={addToStack} />
-              ))}
-            </div>
+                {technologies.map(tech => (
+                  <TechCard 
+                    key={tech.id} 
+                    tech={tech} 
+                    isAdded={stack.some(item => item.id === tech.id)}
+                    onAdd={addToStack} 
+                  />
+                ))}
+              </div>
           </div>
+
           <div className="lg:w-1/4">
             <YourStack stack={stack} onRemove={removeFromStack} onRemoveAll={removeAll} />
           </div>
         </div>
       </main>
 
+      <Footer />
+      
       <ToastContainer position="bottom-right" autoClose={3000} />
     </div>
   );
