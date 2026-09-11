@@ -1,10 +1,12 @@
 import React from 'react';
 import Navbar from './components/Navbar';
+import Hero from './components/Hero';
 
 const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#FAFAFA] font-sans">
       <Navbar />
+      <Hero />
     </div>
   );
 };
