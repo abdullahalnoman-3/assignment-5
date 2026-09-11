@@ -53,3 +53,38 @@ Follow these steps to run the project locally:
 
 ---
 *Created with ❤️ for modern developers.*
+
+
+## 📝 React Questions & Answers
+
+**1. What is JSX, and why is it used in React?
+
+JSX is a JavaScript syntax extension that resembles HTML. It is used to write UI markup directly within JavaScript, making component structure intuitive and readable.
+
+**2. What is the difference between props and state?
+
+props: Read-only, immutable data passed from parent to child.
+
+state: Mutable, local data managed within the component that triggers re-renders on update.
+
+**3. What does the useState hook do, and where did you use it in this project?
+
+useState manages local, dynamic data in functional components. In App.tsx, it tracks the fetched list (technologies), user selections (stack), and the fetch status (loading).
+
+**4. What does the useEffect hook do, and why did you need it to load the JSON data?
+
+useEffect handles side effects such as data fetching. It was used with an empty dependency array to fetch technologies.json automatically once the component mounts.
+
+**5. Why does every item in a .map() list need a unique key prop?
+
+Keys give list items stable identities. This helps React track which items are added, removed, or changed, enabling efficient DOM updates without re-rendering the entire list.
+
+**6. What is conditional rendering? Show one place you used it.
+
+Conditional rendering means displaying specific UI elements based on logic. In YourStack.tsx, it checks stack.length === 0 to display "Your stack is empty"; otherwise, it renders the selected items.
+
+**7. How do you pass data between parent and child components?
+
+Parent to Child: Passed directly via props (e.g., tech={tech}).
+
+Child to Parent: The parent passes a callback function via props (e.g., onAdd), which the child invokes with data as arguments.
